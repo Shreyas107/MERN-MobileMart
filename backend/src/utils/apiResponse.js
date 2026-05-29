@@ -1,8 +1,8 @@
 const successResponse = (
   res,
   message = "success",
-  statusCode = 200,
   data = null,
+  statusCode = 200,
 ) => {
   return res.status(statusCode).json({
     success: true,
