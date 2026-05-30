@@ -1,7 +1,8 @@
 const pool = require("../config/db");
+const PRODUCT = process.env.TABLE_PRODUCT;
 
 exports.findAll = async () => {
-  const sql = `SELECT * FROM products`;
+  const sql = `SELECT * FROM ${PRODUCT}`;
 
   const [rows] = await pool.query(sql);
 
@@ -12,7 +13,7 @@ exports.create = async (productData) => {
   const { brandId, modelName, price, stock, ram, storage, color, description } =
     productData;
 
-  const sql = `INSERT INTO products
+  const sql = `INSERT INTO ${PRODUCT}
     (brand_id, model_name, price, stock, ram, storage, color, description)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -35,4 +36,51 @@ exports.create = async (productData) => {
   }
 
   return result.insertId;
+};
+
+exports.update = async (productData, productId) => {
+  const { brandId, modelName, price, stock, ram, storage, color, description } =
+    productData;
+
+  const sql = `UPDATE ${PRODUCT}
+        SET brand_id = ?, model_name = ?, price = ?, stock = ?, 
+        ram = ?, storage = ?, color = ?, description = ?
+        WHERE product_id = ?`;
+
+  const [result] = await pool.query(sql, [
+    brandId,
+    modelName,
+    price,
+    stock,
+    ram,
+    storage,
+    color,
+    description,
+    productId,
+  ]);
+
+  if (result.affectedRows === 0) {
+    throw {
+      statusCode: 500,
+      message: "Failed to update product",
+    };
+  }
+
+  return { brandId, modelName, price, stock, ram, storage, color, description };
+};
+
+exports.delete = async (productId) => {
+  const sql = `DELETE FROM ${PRODUCT}
+        WHERE product_id = ?`;
+
+  const [result] = await pool.query(sql, [productId]);
+
+  if (result.affectedRows === 0) {
+    throw {
+      statusCode: 404,
+      message: "Failed to delete product.",
+      error: `Product does not exits with this Id: ${productId}`,
+    };
+  }
+  return { productId };
 };

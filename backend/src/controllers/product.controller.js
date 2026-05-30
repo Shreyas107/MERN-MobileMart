@@ -23,6 +23,24 @@ exports.addProduct = async (req, res, next) => {
   }
 };
 
+exports.updateProduct = async (req, res, next) => {
+  try {
+    const product = await productService.update(req.body, req.params.productId);
+    return successResponse(res, "Poduct updated successfully.", product);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteProduct = async (req, res, next) => {
+  try {
+    const product = await productService.delete(req.params.productId);
+    return successResponse(res, "Product deleted successfully.", product);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Error handling:
 // Route
 //  ↓

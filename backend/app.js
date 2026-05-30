@@ -28,6 +28,7 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes
 const productRoutes = require("./src/routes/product.route");
+const brandRoutes = require("./src/routes/brand.route");
 
 // Health Route
 app.get("/", (req, res) => {
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/products", productRoutes);
+app.use("/brands", brandRoutes);
 
 // 404 Handler
 app.use(routeNotFound);
