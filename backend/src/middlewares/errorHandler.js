@@ -1,10 +1,14 @@
+const { errorResponse } = require("../utils/apiResponse");
+
 const errorHandler = (err, req, res, next) => {
   console.error("ERROR:", err);
 
-  return res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || "Internal Server Error",
-  });
+  return errorResponse(
+    res,
+    err.message || "Internal Server Error",
+    err.errors || null,
+    err.statusCode || 500,
+  );
 };
 
 module.exports = errorHandler;

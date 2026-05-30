@@ -13,3 +13,23 @@ exports.getAllProducts = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.addProduct = async (req, res, next) => {
+  try {
+    const product = await productService.create(req.body);
+    return successResponse(res, "Product created successfully.", product, 201);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Error handling:
+// Route
+//  ↓
+// createProductValidator
+//  ↓
+// validate.middleware
+//  ↓
+// errorHandler (if validation fails)
+//  ↓
+// Controller
