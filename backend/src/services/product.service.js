@@ -1,9 +1,9 @@
 const pool = require("../config/db");
 
 exports.findAll = async () => {
-  const [rows] = await pool.query(`
-    SELECT * FROM productss
-  `);
+  const sql = `SELECT * FROM products`;
+
+  const [rows] = await pool.query(sql);
 
   return rows;
 };
